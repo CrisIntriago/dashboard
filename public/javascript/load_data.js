@@ -114,8 +114,10 @@ let selectListener = async (event) => {
       let responseText = await response.text();
 
       await parseXML(responseText);
+
       // Guarde la entrada de almacenamiento local
       await localStorage.setItem(selectedCity, responseText);
+      
     } catch (error) {
       console.log(error);
     }
