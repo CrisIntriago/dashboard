@@ -49,7 +49,6 @@ let cargarOpenMeteo = () => {
 
       let chart2 = new Chart(plotRef2, config);
 
-      console.log(responseJSON);
     })
     .catch(console.error);
 };
@@ -74,7 +73,7 @@ let parseXML = (responseText) => {
     let humidity = time.querySelector("humidity").getAttribute("value");
     let windSpeed = time.querySelector("windSpeed").getAttribute("mps");
     let precipitation = time.querySelector("precipitation").getAttribute("probability");
-    let pressure =time.querySelector("pressure").getAttribute("value");
+    let pressure = time.querySelector("pressure").getAttribute("value");
     let cloud = time.querySelector("clouds").getAttribute("value");
 
     let template = `
@@ -117,7 +116,7 @@ let selectListener = async (event) => {
 
       // Guarde la entrada de almacenamiento local
       await localStorage.setItem(selectedCity, responseText);
-      
+
     } catch (error) {
       console.log(error);
     }
@@ -127,10 +126,32 @@ let selectListener = async (event) => {
   }
 };
 
+var elementoTE = document.querySelector("#postcontent table");
+
+let loadExternalTable = async () => {
+  try{
+      
+      let proxyURL = 'https://cors-anywhere.herokuapp.com/'
+      let endpoint = proxyURL + 'https://www.gestionderiesgos.gob.ec/monitoreo-de-inundaciones/'
+
+      let response = await fetch(endpoint);
+      let responseText = await response.text();
+
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(responseText, "text/html");
+
+      let elemento = xml.querySelector("#postcontent table");
+      let elementoDOM = document.getElementById("monitoreo");
+      elementoDOM.innerHTML = elemento.outerHTML;
+  } catch(error){
+      console.log(error);
+  }
+}
 
 
 
 
+loadExternalTable();
 
 
 
